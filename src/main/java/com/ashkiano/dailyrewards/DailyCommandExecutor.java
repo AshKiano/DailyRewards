@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class DailyCommandExecutor implements CommandExecutor {
     private final DailyRewards plugin;
@@ -32,9 +33,12 @@ public class DailyCommandExecutor implements CommandExecutor {
             return true;
         }
 
-        String rewardCommand = plugin.getConfig().getString("reward-command").replace("%player%", playerName);
-        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), rewardCommand);
-        player.sendMessage("You have claimed your daily reward.");
+        List<String> rewardCommands = plugin.getConfig().getStringList("reward-commands");
+        for (String rewardCommand : rewardCommands) {
+            rewardCommand = rewardCommand.replace("%player%", playerName);
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), rewardCommand);
+        }
+        player.sendMessage("You have claimed your daily rewards.");
 
         plugin.getConfig().set("rewards." + playerName, today);
         plugin.saveConfig();

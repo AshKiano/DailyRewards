@@ -1,1 +1,3 @@
-reward-command: "give %player% diamond 1"
+reward-commands:
+  - "give %player% diamond 1"
+  - "give %player% gold_ingot 5"
